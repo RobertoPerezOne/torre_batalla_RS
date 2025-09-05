@@ -100,7 +100,7 @@ def index():
 
         df_filtrado = df_final.copy()
         if tipo_entrenador:
-            df_filtrado = df_filtrado[df_filtrado['Tipo Entrenador'].str.contains(tipo_entrenador, case=False, na=False)]
+            df_filtrado = df_filtrado[df_filtrado['tipo_entrenador'].str.contains(tipo_entrenador, case=False, na=False)]
         if nombre_entrenador:
             df_filtrado = df_filtrado[df_filtrado['Nombre'].str.contains(nombre_entrenador, case=False, na=False)]
         if modalidad:
