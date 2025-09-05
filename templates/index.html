@@ -93,4 +93,61 @@
             </div>
             <div class="form-group">
                 <label for="nombre_pokemon">Nombre del Pokémon</label>
-                <input type="text" id="nombre_pokemon" name="nombre_pokemon" placehol
+                <input type="text" id="nombre_pokemon" name="nombre_pokemon" placeholder="Ej: Raichu">
+            </div>
+            <button type="submit">Buscar</button>
+        </form>
+
+        <div id="resultados"></div>
+    </div>
+
+    <script>
+        document.getElementById("buscadorForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const tipo_entrenador = document.getElementById("tipo_entrenador").value;
+            const nombre_entrenador = document.getElementById("nombre_entrenador").value;
+            const modalidad = document.getElementById("modalidad").value;
+            const nombre_pokemon = document.getElementById("nombre_pokemon").value;
+
+            const params = new URLSearchParams({
+                tipo_entrenador,
+                nombre_entrenador,
+                modalidad,
+                nombre_pokemon
+            });
+
+            try {
+                const res = await fetch(`/buscar?${params.toString()}`);
+                const data = await res.json();
+
+                const resultadosDiv = document.getElementById("resultados");
+                resultadosDiv.innerHTML = "";
+
+                if (res.ok && data.length > 0) {
+                    let table = "<h2>Resultados de la Búsqueda</h2><table><thead><tr>";
+                    Object.keys(data[0]).forEach(col => {
+                        table += `<th>${col}</th>`;
+                    });
+                    table += "</tr></thead><tbody>";
+
+                    data.forEach(row => {
+                        table += "<tr>";
+                        Object.values(row).forEach(val => {
+                            table += `<td>${val !== null ? val : ""}</td>`;
+                        });
+                        table += "</tr>";
+                    });
+
+                    table += "</tbody></table>";
+                    resultadosDiv.innerHTML = table;
+                } else {
+                    resultadosDiv.innerHTML = `<p style="text-align:center;">No se encontraron resultados para tu búsqueda.</p>`;
+                }
+            } catch (error) {
+                console.error("Error en la búsqueda:", error);
+            }
+        });
+    </script>
+</body>
+</html>
