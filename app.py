@@ -104,6 +104,7 @@ else:
     print("ADVERTENCIA: La aplicación se inicia con un DataFrame vacío.")
 
 # --- Definición de la Ruta Principal ---
+# Reemplaza tu función index con esta
 @app.route('/', methods=['GET', 'POST'])
 def index():
     resultados = pd.DataFrame()
@@ -129,6 +130,10 @@ def index():
             df_filtrado = df_filtrado[df_filtrado['Nombre Pokémon'].str.contains(nombre_pokemon, case=False, na=False)]
             
         resultados = df_filtrado
+        
+        # --- LÍNEA DE DEPURACIÓN ---
+        # Esto nos dirá cuántos resultados encontró el filtro.
+        print(f"Resultados encontrados después de filtrar: {len(resultados)}")
         
     return render_template('index.html', resultados=resultados)
 
